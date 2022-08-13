@@ -9,6 +9,10 @@ We use a simple Makefile to execute the docker scripts. If you have a proper con
 make
 ```
 
+To run the benchmark for NebulaStream, execute
+```bash
+make nes
+```
 
 ## Layout
 

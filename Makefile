@@ -1,12 +1,22 @@
 nodename:=$(shell uname -n)
 
 all: turbo fast_flatten distinct_id stacked_plot time_distribution minified_inputs comparison large_files clmul vectorized_classification
+nes: nebula_stream
 
 checkht: 
 	-./scripts/ht.py	
 
 .PHONY: checkht
 
+nebula_stream: checkht
+	git submodule update --init --recursive
+	cd library/simdjson && make clean && cd ../..
+	docker build  -f experiments/nebula_stream/Dockerfile -t nebula_stream .
+	$(eval outputdir:=$(PWD)/results/$(nodename)/nebula_stream)
+	@echo $(outputdir)
+	mkdir -p $(outputdir)
+	docker run --privileged -v $(outputdir):/results nebula_stream
+	@echo "results have been copied to $(outputdir)"
 
 growing: 
 	git submodule update --init --recursive
